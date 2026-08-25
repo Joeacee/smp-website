@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RiseSMP</title>
-    <meta name="keywords" content="RiseSMP, opik.net, Minecraft SMP, Vanilla Survival, Pure Vanilla, Minecraft Server, No Hacks Survival">
+    <meta name="keywords" content="RiseSMP, opik.net, Minecraft SMP, Minecraft Server, Fun, MC, Minecraft">
     <style>
-        /* FIX: Strips out the white borders and bars injected by old frame masks */
         html, body {
             margin: 0;
             padding: 0;
@@ -30,6 +29,22 @@
             display: inline-block; 
             margin-top: 20px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+            max-width: 400px;
+            width: 90%;
+        }
+
+        /* Flexbox container to align the icon and title side-by-side */
+        .card-header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        /* Style for the title inside the container */
+        .card-header-container h3 {
+            margin: 0;
         }
         
         .status-indicator { 
@@ -43,6 +58,22 @@
         
         .online { background: #4caf50; }
         .offline { background: #f44336; }
+
+        /* Updated style for the server icon image next to text */
+        #server-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: none; /* Hidden by default, shown when server is online */
+        }
+
+        #server-motd-sub {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #bbb;
+            white-space: pre-wrap;
+        }
         
         button { 
             background: #ff9800; 
@@ -63,14 +94,20 @@
 <body>
 
     <h1>Welcome to RiseSMP</h1>
-    <p>A Minecraft Survival Server</p>
+    <p id="server-motd-sub">A Minecraft Survival Server</p>
 
     <!-- Server Status Module -->
     <div class="status-card">
-        <h3>Server Connection Details</h3>
+        <!-- New structural wrapper to align icon and text side-by-side -->
+        <div class="card-header-container">
+            <img id="server-icon" src="" alt="Server Icon">
+            <h3>Server Connection Details</h3>
+        </div>
+        
         <p><span id="status-dot" class="status-indicator"></span> Status: <strong id="server-status">Loading...</strong></p>
         <p>Active Players: <strong id="player-count">0</strong> / <strong id="max-players">0</strong></p>
         <p>Server Version: <span id="server-version">-</span></p>
+
         <button id="java-btn" onclick="copyJavaIP()">Copy Java Server IP</button>
         <button id="bedrock-btn" onclick="copyBedrockIP()">Copy Bedrock Server IP</button>
     </div>
@@ -78,7 +115,7 @@
     <script>
         async function fetchServerStatus() {
             try {
-                const response = await fetch('https://api.mcstatus.io/v2/status/java/risesmp.opik.net');
+                const response = await fetch('https://mcstatus.io');
                 const data = await response.json();
 
                 const statusDot = document.getElementById('status-dot');
@@ -86,14 +123,30 @@
                 const playerCount = document.getElementById('player-count');
                 const maxPlayers = document.getElementById('max-players');
                 const serverVersion = document.getElementById('server-version');
+                
+                const iconImg = document.getElementById('server-icon');
+                const motdSub = document.getElementById('server-motd-sub');
 
                 if (data.online) {
+                    const icon = data.icon;
+                    const motd = data.motd ? data.motd.clean : 'A Minecraft Survival Server';
+
                     statusDot.className = "status-indicator online";
                     serverStatus.innerText = "ONLINE";
                     serverStatus.style.color = "#4caf50";
                     playerCount.innerText = data.players.online;
                     maxPlayers.innerText = data.players.max;
                     serverVersion.innerText = data.version.name_clean;
+
+                    motdSub.innerText = motd;
+
+                    // Display and inject icon inline if available
+                    if (icon) {
+                        iconImg.src = icon;
+                        iconImg.style.display = 'inline-block';
+                    } else {
+                        iconImg.style.display = 'none';
+                    }
                 } else {
                     statusDot.className = "status-indicator offline";
                     serverStatus.innerText = "OFFLINE";
@@ -101,6 +154,9 @@
                     playerCount.innerText = "0";
                     maxPlayers.innerText = "0";
                     serverVersion.innerText = "-";
+                    
+                    motdSub.innerText = "A Minecraft Survival Server";
+                    iconImg.style.display = 'none';
                 }
             } catch (error) {
                 console.error('Error fetching server data:', error);
@@ -126,3 +182,4 @@
     </script>
 </body>
 </html>
+
