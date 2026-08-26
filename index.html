@@ -6,7 +6,6 @@
     <title>RiseSMP</title>
     <meta name="keywords" content="RiseSMP, opik.net, Minecraft SMP, Minecraft Server, Fun, MC, Minecraft">
     <style>
-        @import url('https://googleapis.com');
         html, body {
             margin: 0;
             padding: 0;
@@ -20,11 +19,53 @@
             font-family: sans-serif; 
             color: #fff; 
             text-align: center; 
-            padding-top: 50px; 
             box-sizing: border-box;
         }
+
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #16161a;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            box-sizing: border-box;
+        }
+
+        .header-logo-img {
+            height: 50px;
+            display: block;
+            width: auto;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #ff9800;
+        }
+
+        .main-content {
+            padding: 140px 20px 50px 20px; 
+        }
+
         .live-motd-heading {
-            font-family: 'Fredoka', sans-serif;
+            font-family: sans-serif;
             font-weight: 700;
             font-size: 2.2rem;
             margin: 0 auto 20px auto;
@@ -117,24 +158,36 @@
 
 </head>
 <body>
-    <h1 id="live-motd-container" class="live-motd-heading">Loading server message...</h1>
 
-    <!-- Server Status Module -->
-    <div class="status-card">
-        <div class="card-content-layout">
-            <img id="server-icon" class="server-icon" src="" alt="Server Icon">
-            <div class="details-text-wrapper">
-                <h3>Server Connection Details</h3>
-                <p><span id="status-dot" class="status-indicator"></span> Status: <strong id="server-status">Loading...</strong></p>
-                <p>Active Players: <strong id="player-count">0</strong> / <strong id="max-players">0</strong></p>
-                <p>Server Version: <span id="server-version">-</span></p>
+    <header class="site-header">
+        <a href="#">
+            <img src="Rise_title.png" alt="RiseSMP Logo" class="header-logo-img">
+        </a>
+        <nav class="header-nav">
+            <a href="https://discord.gg/BJj59SX4G" target="_blank" class="nav-link">Rules</a>
+            <a href="https://discord.gg/BJj59SX4G" target="_blank" class="nav-link">Discord</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <h1 id="live-motd-container" class="live-motd-heading">Loading server message...</h1>
+
+        <div class="status-card">
+            <div class="card-content-layout">
+                <img id="server-icon" class="server-icon" src="" alt="Server Icon">
+                <div class="details-text-wrapper">
+                    <h3>Server Connection Details</h3>
+                    <p><span id="status-dot" class="status-indicator"></span> Status: <strong id="server-status">Loading...</strong></p>
+                    <p>Active Players: <strong id="player-count">0</strong> / <strong id="max-players">0</strong></p>
+                    <p>Server Version: <span id="server-version">-</span></p>
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="java-btn" onclick="copyJavaIP()">Copy Java Server IP</button>
+                <button id="bedrock-btn" onclick="copyBedrockIP()">Copy Bedrock Server IP</button>
             </div>
         </div>
-        <div class="button-group">
-            <button id="java-btn" onclick="copyJavaIP()">Copy Java Server IP</button>
-            <button id="bedrock-btn" onclick="copyBedrockIP()">Copy Bedrock Server IP</button>
-        </div>
-    </div>
+    </main>
 
     <script>
         async function fetchServerStatus() {
