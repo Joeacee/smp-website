@@ -1,1 +1,1 @@
-This is just to host my minecraft server web site.
+This is just to host my Minecraft SMP server website.
