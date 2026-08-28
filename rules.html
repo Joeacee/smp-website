@@ -171,93 +171,21 @@
     </header>
 
     <main class="main-content">
-        <h1 id="live-motd-container" class="live-motd-heading">Loading server message...</h1>
-
-        <div class="status-card">
-            <div class="card-content-layout">
-                <img id="server-icon" class="server-icon" src="" alt="Server Icon">
-                <div class="details-text-wrapper">
-                    <h3>Server Connection Details</h3>
-                    <p><span id="status-dot" class="status-indicator"></span> Status: <strong id="server-status">Loading...</strong></p>
-                    <p>Active Players: <strong id="player-count">0</strong> / <strong id="max-players">0</strong></p>
-                    <p>Server Version: <span id="server-version">-</span></p>
-                </div>
-            </div>
-            <div class="button-group">
-                <button id="java-btn" onclick="copyJavaIP()">Copy Java Server IP</button>
-                <button id="bedrock-btn" onclick="copyBedrockIP()">Copy Bedrock Server IP</button>
-            </div>
+    <h1 class="live-motd-heading">RiseSMP Server Rules</h1>
+    <div class="status-card" style="text-align: left;">
+        <h3>Official Server Guidelines</h3>
+        <p><strong>1. No Griefing or Stealing:</strong> Do not destroy or loot structures belonging to other players without permission.</p>
+        <p><strong>2. Fair Play:</strong> Cheating, hacked clients, x-ray packs, and utilizing major exploits are strictly prohibited.</p>
+        <p><strong>3. Chat Behavior:</strong> Be respectful in global chat. Toxicity, excessive spam, and hate speech will result in a mute or ban.</p>
+        <p><strong>4. Claiming Land:</strong> Respect boundaries and do not build directly next to someone else's base unless agreed upon.</p>
+        
+        <div class="button-group" style="margin-top: 25px;">
+            <a href="index.html" style="width: 100%; text-align: center; text-decoration: none;">
+                <button style="max-width: 100%; width: 100%;">Back to Home Page</button>
+            </a>
         </div>
-    </main>
-
-    <script>
-        async function fetchServerStatus() {
-            try {
-                const response = await fetch('https://api.mcstatus.io/v2/status/java/risesmp.opik.net');
-                const data = await response.json();
-
-                const statusDot = document.getElementById('status-dot');
-                const serverStatus = document.getElementById('server-status');
-                const playerCount = document.getElementById('player-count');
-                const maxPlayers = document.getElementById('max-players');
-                const serverVersion = document.getElementById('server-version');
-                const motdContainer = document.getElementById('live-motd-container');
-                const iconImg = document.getElementById('server-icon');
-
-                if (data.online) {
-                    statusDot.className = "status-indicator online";
-                    serverStatus.innerText = "ONLINE";
-                    serverStatus.style.color = "#4caf50";
-                    playerCount.innerText = data.players.online;
-                    maxPlayers.innerText = data.players.max;
-                    serverVersion.innerText = data.version.name_clean;
-                    
-                    if (data.icon) {
-                        iconImg.src = data.icon;
-                        iconImg.style.display = "block";
-                    } else {
-                        iconImg.style.display = "none";
-                    }
-
-                    if (data.motd && data.motd.html) {
-                        motdContainer.innerHTML = data.motd.html;
-                    } else {
-                        motdContainer.innerText = "Welcome to RiseSMP";
-                    }
-                } else {
-                    statusDot.className = "status-indicator offline";
-                    serverStatus.innerText = "OFFLINE";
-                    serverStatus.style.color = "#f44336";
-                    playerCount.innerText = "0";
-                    maxPlayers.innerText = "0";
-                    serverVersion.innerText = "-";
-                    iconImg.style.display = "none";
-                    motdContainer.innerHTML = '<span style="color: #f44336;">Server Offline</span>';
-                }
-            } catch (error) {
-                console.error('Error fetching server data:', error);
-                document.getElementById('live-motd-container').innerText = "Welcome to RiseSMP";
-                document.getElementById('server-icon').style.display = "none";
-            }
-        }
-
-        function copyJavaIP() {
-            navigator.clipboard.writeText('risesmp.opik.net');
-            const btn = document.getElementById('java-btn');
-            btn.innerText = "Copied Java IP!";
-            setTimeout(() => { btn.innerText = "Copy Java Server IP"; }, 2000);
-        }
-
-        function copyBedrockIP() {
-            navigator.clipboard.writeText('b.risesmp.opik.net:18942');
-            const btn = document.getElementById('bedrock-btn');
-            btn.innerText = "Copied Bedrock IP!";
-            setTimeout(() => { btn.innerText = "Copy Bedrock Server IP"; }, 2000);
-        }
-
-        fetchServerStatus();
-        setInterval(fetchServerStatus, 30000);
-    </script>
+    </div>
+</main>
 </body>
 </html>
 
